@@ -6,11 +6,11 @@
 <title>Mots croisés Microsoft</title>
 <style>
   :root {
-    --cell-size: 48px;   /* taille par défaut des cases */
+    --cell-size: 48px;   
     --cell-font: 18px;
   }
 
-  /* Ajustements responsive */
+
   @media (max-width: 768px) {
     :root {
       --cell-size: 40px;
@@ -31,7 +31,7 @@
     color: #1f1f1f;
   }
 
-  /* Barre bleue avec logo */
+ 
   .top-bar {
     background: #0078d4;
     padding: 10px 14px;
@@ -67,7 +67,7 @@
     font-size: 14px;
   }
 
-  /* Conteneur de la grille : permet le scroll horizontal si besoin */
+  
   .board-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -155,9 +155,9 @@
 </head>
 <body>
 
-<!-- Barre bleue responsive -->
+
 <div class="top-bar">
-  <!-- Remplace mtc.png par ton chemin local si besoin -->
+  
   <img src="mtc.png" alt="Logo Microsoft">
   <span class="title">Mots croisés Microsoft</span>
 </div>
@@ -190,7 +190,7 @@
 </div>
 
 <script>
-/* Ta grille initiale */
+
 const gridLayout = [
   ['A','Z','U','R','E','',''],
   ['O','N','E','','N','O','T','E'],
@@ -201,13 +201,13 @@ const gridLayout = [
   ['','','','','T','E','A','M','S']
 ];
 
-/* On calcule dynamiquement le nombre de lignes/colonnes */
+
 const rows = gridLayout.length;
 const cols = Math.max(...gridLayout.map(r => r.length));
 
 const table = document.getElementById('grid');
 
-/* Construction de la grille responsive */
+
 for (let r = 0; r < rows; r++) {
   const tr = document.createElement('tr');
   for (let c = 0; c < cols; c++) {
@@ -216,11 +216,11 @@ for (let r = 0; r < rows; r++) {
     if (val !== '') {
       const input = document.createElement('input');
       input.maxLength = 1;
-      input.inputMode = 'latin'; // claviers mobiles
+      input.inputMode = 'latin'; 
       input.autocomplete = 'off';
       input.spellcheck = false;
       input.dataset.solution = val;
-      // Navigation automatique au prochain champ sur mobile
+   
       input.addEventListener('input', (e) => {
         e.target.value = e.target.value.toUpperCase();
         if (e.target.value && e.target.parentElement.nextElementSibling) {
