@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mots croisés Microsoft</title>
+<style>
+  :root {
+    --cell-size: 48px;   /* taille par défaut des cases */
+    --cell-font: 18px;
+  }
+
+  /* Ajustements responsive */
+  @media (max-width: 768px) {
+    :root {
+      --cell-size: 40px;
+      --cell-font: 16px;
+    }
+  }
+  @media (max-width: 480px) {
+    :root {
+      --cell-size: 34px;
+      --cell-font: 15px;
+    }
+  }
+
+  body {
+    font-family: Segoe UI, system-ui, -apple-system, Arial, sans-serif;
+    background: linear-gradient(135deg, #f3f2f1, #ffffff);
+    margin: 0;
+    color: #1f1f1f;
+  }
+
+  /* Barre bleue avec logo */
+  .top-bar {
+    background: #0078d4;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.18);
+  }
+  .top-bar img {
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+  .top-bar .title {
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  header {
+    text-align: center;
+    padding: 14px 12px 0;
+  }
+  header h1 {
+    color: #0078d4;
+    margin: 10px 0 6px;
+    font-weight: 600;
+    font-size: clamp(20px, 4vw, 28px);
+  }
+  header p {
+    margin: 0 0 12px;
+    color: #444;
+    font-size: 14px;
+  }
+
+  /* Conteneur de la grille : permet le scroll horizontal si besoin */
+  .board-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 10px auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  td {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid #d0d0d0;
+    text-align: center;
+    text-transform: uppercase;
+    background: #fff;
+    transition: background .15s ease;
+    position: relative;
+  }
+  td.block {
+    background: #0078d4;
+    border-color: #0070c8;
+  }
+  td:hover:not(.block) {
+    background: #e6f2fb;
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: var(--cell-font);
+    background: transparent;
+    outline: none;
+    font-weight: 700;
+    color: #2b2b2b;
+  }
+
+  .clues {
+    max-width: 720px;
+    margin: 16px auto;
+    background: #ffffffcc;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .clues h3 {
+    color: #0078d4;
+    margin: 4px 0 8px;
+    font-size: 18px;
+  }
+  .clues ul {
+    margin: 0;
+    padding-left: 18px;
+    line-height: 1.5;
+    font-size: 15px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 0 24px;
+  }
+  .btn {
+    background: #0078d4;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s ease, transform .05s ease;
+  }
+  .btn:hover { background: #005a9e; }
+  .btn:active { transform: translateY(1px); }
+</style>
+</head>
+<body>
+
+<!-- Barre bleue responsive -->
+<div class="top-bar">
+  <!-- Remplace mtc.png par ton chemin local si besoin -->
+  <img src="mtc.png" alt="Logo Microsoft">
+  <span class="title">Mots croisés Microsoft</span>
+</div>
+
+<header>
+  <h1>🧩 Mots croisés Microsoft</h1>
+  <p>Remplis la grille avec les bons mots Microsoft</p>
+</header>
+
+<div class="board-wrapper">
+  <table id="grid" aria-label="Grille de mots croisés Microsoft"></table>
+</div>
+
+<div class="clues">
+  <h3>Indications :</h3>
+  <ul>
+    <li>Cloud de Microsoft pour héberger des applications et stocker des données.</li>
+    <li>Application pour prendre des notes et les synchroniser.</li>
+    <li>Deuxième partie du nom de l’environnement de développement de Microsoft.</li>
+    <li>Suite bureautique (Word, Excel, PowerPoint, Outlook…).</li>
+    <li>Gamme de tablettes et PC conçus par Microsoft.</li>
+    <li>Stockage en ligne pour sauvegarder et partager des fichiers.</li>
+    <li>Outil de collaboration pour discuter et faire des réunions.</li>
+  </ul>
+</div>
+
+<div class="actions">
+  <button class="btn" onclick="checkAnswers()">Vérifier mes réponses</button>
+  <button class="btn" onclick="clearGrid()">Effacer</button>
+</div>
+
+<script>
+/* Ta grille initiale */
+const gridLayout = [
+  ['A','Z','U','R','E','',''],
+  ['O','N','E','','N','O','T','E'],
+  ['S','T','U','D','I','O',''],
+  ['O','F','F','I','C','E',''],
+  ['S','U','R','F','A','C','E'],
+  ['O','N','E','D','R','I','V','E'],
+  ['','','','','T','E','A','M','S']
+];
+
+/* On calcule dynamiquement le nombre de lignes/colonnes */
+const rows = gridLayout.length;
+const cols = Math.max(...gridLayout.map(r => r.length));
+
+const table = document.getElementById('grid');
+
+/* Construction de la grille responsive */
+for (let r = 0; r < rows; r++) {
+  const tr = document.createElement('tr');
+  for (let c = 0; c < cols; c++) {
+    const td = document.createElement('td');
+    const val = (gridLayout[r] && gridLayout[r][c] !== undefined) ? gridLayout[r][c] : '';
+    if (val !== '') {
+      const input = document.createElement('input');
+      input.maxLength = 1;
+      input.inputMode = 'latin'; // claviers mobiles
+      input.autocomplete = 'off';
+      input.spellcheck = false;
+      input.dataset.solution = val;
+      // Navigation automatique au prochain champ sur mobile
+      input.addEventListener('input', (e) => {
+        e.target.value = e.target.value.toUpperCase();
+        if (e.target.value && e.target.parentElement.nextElementSibling) {
+          const next = e.target.parentElement.nextElementSibling.querySelector('input');
+          if (next) next.focus();
+        }
+      });
+      td.appendChild(input);
+    } else {
+      td.className = 'block';
+    }
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+}
+
+function checkAnswers() {
+  let correct = 0, total = 0;
+  document.querySelectorAll('#grid input').forEach(input => {
+    total++;
+    if (input.value.toUpperCase() === input.dataset.solution) {
+      input.style.background = '#b6fcb6';
+      correct++;
+    } else {
+      input.style.background = '#fcb6b6';
+    }
+  });
+  alert(`Score : ${correct} / ${total}`);
+}
+
+function clearGrid() {
+  document.querySelectorAll('#grid input').forEach(input => {
+    input.value = '';
+    input.style.background = 'transparent';
+  });
+}
+</script>
+
+</body>
+</html>
